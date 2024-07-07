@@ -24,7 +24,7 @@ class editorialcontroller extends Controller
      */
     public function create()
     {
-        //
+        return view('editorial.create');
     }
 
     /**
@@ -32,7 +32,11 @@ class editorialcontroller extends Controller
      */
     public function store(StoreeditorialRequest $request)
     {
-        //
+        editorial::create([
+            "name" => $request->name,
+        ]);
+
+        return redirect()->route('editorial.index')->with('request','editorial creado con exito');
     }
 
     /**
@@ -48,7 +52,7 @@ class editorialcontroller extends Controller
      */
     public function edit(editorial $editorial)
     {
-        //
+        return view('editorial.edit',compact('editorial'));
     }
 
     /**
@@ -56,7 +60,11 @@ class editorialcontroller extends Controller
      */
     public function update(UpdateeditorialRequest $request, editorial $editorial)
     {
-        //
+        $editorial->update([
+            "name" => $request->name,
+        ]);
+
+        return redirect()->route('editorial.index')->with('request', 'editorial Actualizado con exito');
     }
 
     /**
@@ -64,6 +72,7 @@ class editorialcontroller extends Controller
      */
     public function destroy(editorial $editorial)
     {
-        //
+        $editorial->delete();
+        return redirect()->route('editorial.index');
     }
 }

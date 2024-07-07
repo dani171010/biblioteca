@@ -24,7 +24,7 @@ class prestamocontroller extends Controller
      */
     public function create()
     {
-        //
+        return view('prestamo.create');
     }
 
     /**
@@ -32,7 +32,15 @@ class prestamocontroller extends Controller
      */
     public function store(StoreprestamoRequest $request)
     {
-        //
+        prestamo::create([
+            'entrega_f'=>$request->entrega_f,
+            'devolucion_f'=>$request->devolucion_f,
+            'observacion'=>$request->observacion,
+            'libro_id'=>$request->libro_id,
+            'usuario_id'=>$request->usuario_id,
+        ]);
+
+        return redirect()->route('prestamo.index')->with('request','Prestamo creado con exito');
     }
 
     /**
@@ -48,7 +56,7 @@ class prestamocontroller extends Controller
      */
     public function edit(prestamo $prestamo)
     {
-        //
+        return view('prestamo.edit',compact('prestamo'));
     }
 
     /**
@@ -56,7 +64,15 @@ class prestamocontroller extends Controller
      */
     public function update(UpdateprestamoRequest $request, prestamo $prestamo)
     {
-        //
+        prestamo->update([
+            'entrega_f'=>$request->entrega_f,
+            'devolucion_f'=>$request->devolucion_f,
+            'observacion'=>$request->observacion,
+            'libro_id'=>$request->libro_id,
+            'usuario_id'=>$request->usuario_id,
+        ]);
+
+        return redirect()->route('prestamo.index')->with('request','Prestamo editado con exito');
     }
 
     /**
@@ -64,6 +80,7 @@ class prestamocontroller extends Controller
      */
     public function destroy(prestamo $prestamo)
     {
-        //
+        $prestamo->delete();
+        return redirect()->route('prestamo.index');
     }
 }

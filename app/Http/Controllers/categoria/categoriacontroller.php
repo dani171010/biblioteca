@@ -24,7 +24,7 @@ class categoriacontroller extends Controller
      */
     public function create()
     {
-        //
+        return view('categoria.create');
     }
 
     /**
@@ -32,7 +32,11 @@ class categoriacontroller extends Controller
      */
     public function store(StorecategoriaRequest $request)
     {
-        //
+        categoria::create([
+            'nombre' => $request->nombre,
+        ]);
+
+        return redirect()->route('categoria.index')->with('request','Categoria creada con exito');
     }
 
     /**
@@ -48,7 +52,7 @@ class categoriacontroller extends Controller
      */
     public function edit(categoria $categoria)
     {
-        //
+        return view('categoria.edit',compact('categoria'));
     }
 
     /**
@@ -56,7 +60,11 @@ class categoriacontroller extends Controller
      */
     public function update(UpdatecategoriaRequest $request, categoria $categoria)
     {
-        //
+        $categoria->update([
+            'nombre' => $request->nombre,
+        ]);
+
+        return redirect()->route('categoria.index')->with('request','Categoria actualizada correctamente');
     }
 
     /**
@@ -64,6 +72,7 @@ class categoriacontroller extends Controller
      */
     public function destroy(categoria $categoria)
     {
-        //
+        $categoria->delete();
+        return redirect()->route('categoria.index');
     }
 }
