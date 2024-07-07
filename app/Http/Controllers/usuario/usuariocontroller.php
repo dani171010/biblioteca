@@ -14,7 +14,9 @@ class usuariocontroller extends Controller
      */
     public function index()
     {
-        //
+        $usuario = usuario::all();
+
+        return view('usuario.index',compact('usuario'));
     }
 
     /**
@@ -22,7 +24,7 @@ class usuariocontroller extends Controller
      */
     public function create()
     {
-        //
+        return view('usuario.create');
     }
 
     /**
@@ -30,7 +32,16 @@ class usuariocontroller extends Controller
      */
     public function store(StoreusuarioRequest $request)
     {
-        //
+        usuario::create([
+            'nombre' => $request->nombre,
+            'apellido' => $request->apellido,
+            'documento_t' => $request->documento_t,
+            'documento' => $request->documento,
+            'email' => $request->email,
+            'telefono' => $request->telefono,
+        ]);
+
+        return redirect()->route('usuario.index')->with('request','usuario creado con exito');
     }
 
     /**
@@ -46,7 +57,7 @@ class usuariocontroller extends Controller
      */
     public function edit(usuario $usuario)
     {
-        //
+        return view('usuario.edit',compact('usuario'));
     }
 
     /**
@@ -54,7 +65,16 @@ class usuariocontroller extends Controller
      */
     public function update(UpdateusuarioRequest $request, usuario $usuario)
     {
-        //
+        $usuario->update([
+            'nombre' => $request->nombre,
+            'apellido' => $request->apellido,
+            'documento_t' => $request->documento_t,
+            'documento' => $request->documento,
+            'email' => $request->email,
+            'telefono' => $request->telefono,
+        ]);
+
+        return redirect()->route('usuario.index')->with('request','usuario Actualizado con exito');
     }
 
     /**
@@ -62,6 +82,8 @@ class usuariocontroller extends Controller
      */
     public function destroy(usuario $usuario)
     {
-        //
+
+        $usuario->delete();
+        return redirect()->route('usuario.index');
     }
 }

@@ -14,7 +14,9 @@ class autorcontroller extends Controller
      */
     public function index()
     {
-        //
+        $autor = autor::all();
+
+        return view('autor.index',compact('autor'));
     }
 
     /**
@@ -22,7 +24,7 @@ class autorcontroller extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**

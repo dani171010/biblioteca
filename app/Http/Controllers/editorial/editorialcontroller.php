@@ -14,7 +14,9 @@ class editorialcontroller extends Controller
      */
     public function index()
     {
-        //
+        $editorial = editorial::all();
+
+        return view('editorial.index',compact('editorial'));
     }
 
     /**
