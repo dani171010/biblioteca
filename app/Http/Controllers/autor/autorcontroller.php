@@ -24,7 +24,7 @@ class autorcontroller extends Controller
      */
     public function create()
     {
-        
+        return view('autor.create');
     }
 
     /**
@@ -32,7 +32,12 @@ class autorcontroller extends Controller
      */
     public function store(StoreautorRequest $request)
     {
-        //
+        autor::create([
+            'name'=>$request->name,
+            'nacionalidad'=>$request->nacionalidad,
+        ]);
+
+        return redirect()->route('autor.index')->with('request','Autor creado con exito');
     }
 
     /**
@@ -48,7 +53,7 @@ class autorcontroller extends Controller
      */
     public function edit(autor $autor)
     {
-        //
+        return view('autor.edit',compact('autor'));
     }
 
     /**
@@ -56,7 +61,12 @@ class autorcontroller extends Controller
      */
     public function update(UpdateautorRequest $request, autor $autor)
     {
-        //
+        $autor->update([
+            'name'=>$request->name,
+            'nacionalidad'=>$request->nacionalidad,
+        ]);
+
+        return redirect()->route('autor.index')->with('request','Autor actualizado con exito');
     }
 
     /**
@@ -64,6 +74,7 @@ class autorcontroller extends Controller
      */
     public function destroy(autor $autor)
     {
-        //
+        $autor->delete();
+        return redirect()->route('autor.index');
     }
 }
