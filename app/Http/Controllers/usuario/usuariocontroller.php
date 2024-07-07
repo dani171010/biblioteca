@@ -15,7 +15,6 @@ class usuariocontroller extends Controller
     public function index()
     {
         $usuario = usuario::all();
-
         return view('usuario.index',compact('usuario'));
     }
 
@@ -82,7 +81,6 @@ class usuariocontroller extends Controller
      */
     public function destroy(usuario $usuario)
     {
-
         $usuario->delete();
         return redirect()->route('usuario.index');
     }
