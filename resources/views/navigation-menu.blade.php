@@ -16,7 +16,35 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+
+
+                <div>
+                    <x-nav-link href="{{ route('usuario.index') }}" :active="request()->routeIs('usuario.index')">
+                        {{ __('Usuario') }}
+                    </x-nav-link>
+                </div>
+
+                <div>
+                    <x-nav-link href="{{ route('categorias.index') }}" :active="request()->routeIs('categorias.index')">
+                        {{ __('Categorias') }}
+                    </x-nav-link>
+                </div>
+
+                <div>
+                    <x-nav-link href="{{ route('autor.index') }}" :active="request()->routeIs('autor.index')">
+                        {{ __('Autor') }}
+                    </x-nav-link>
+                </div>
+
+                <div>
+                    <x-nav-link href="{{ route('editorial.index') }}" :active="request()->routeIs('editorial.index')">
+                        {{ __('Editorial') }}
+                    </x-nav-link>
+                </div>
+
             </div>
+
+
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <!-- Teams Dropdown -->

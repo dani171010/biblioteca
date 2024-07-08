@@ -24,7 +24,7 @@ class categoriacontroller extends Controller
      */
     public function create()
     {
-        return view('categoria.create');
+        return view('categorias.create');
     }
 
     /**
@@ -36,7 +36,7 @@ class categoriacontroller extends Controller
             'nombre' => $request->nombre,
         ]);
 
-        return redirect()->route('categoria.index')->with('request','Categoria creada con exito');
+        return redirect()->route('categorias.index')->with('request','Categoria creada con exito');
     }
 
     /**
@@ -64,7 +64,7 @@ class categoriacontroller extends Controller
             'nombre' => $request->nombre,
         ]);
 
-        return redirect()->route('categoria.index')->with('request','Categoria actualizada correctamente');
+        return redirect()->route('categorias.index')->with('request','Categoria actualizada correctamente');
     }
 
     /**
@@ -73,6 +73,6 @@ class categoriacontroller extends Controller
     public function destroy(categoria $categoria)
     {
         $categoria->delete();
-        return redirect()->route('categoria.index');
+        return redirect()->route('categorias.index');
     }
 }

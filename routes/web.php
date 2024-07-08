@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\autor\autorcontroller;
+use App\Http\Controllers\categoria\categoriacontroller;
+use App\Http\Controllers\editorial\editorialcontroller;
+use App\Http\Controllers\libro\librocontroller;
+use App\Http\Controllers\prestamo\prestamocontroller;
+use App\Http\Controllers\usuario\usuariocontroller;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,6 +25,6 @@ Route::middleware([
     Route::resource('prestamo', prestamocontroller::class);
     Route::resource('libro', librocontroller::class);
     Route::resource('editorial', editorialcontroller::class);
-    Route::resource('categoria', categoriacontroller::class);
+    Route::resource('categorias', categoriacontroller::class);
     Route::resource('autor', autorcontroller::class);
 });

@@ -24,19 +24,53 @@
 </x-app-layout>
 
 <script>
- function confirmDelete(id) {
-        alertify.confirm("¿Seguro que quieres eliminar este usuario?",
-        function(){
-            let form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = '/usuario/' + id;
-                    form.innerHTML = '@csrf @method("DELETE")';
-                    document.body.appendChild(form);
-                    form.submit();
-            alertify.success('Se ha eliminado el usuario correctamente');
-        },
-        function(){
-            alertify.error('No se pudo eliminar el usuario');
+    function confirmDelete(id) {
+        Swal.fire({
+            title: '¿Seguro que quieres eliminar este usuario?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminarlo',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/usuario/' + id;
+
+                // Create hidden CSRF input
+                let csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '_token';
+                csrfInput.value = '{{ csrf_token() }}'; // Ensure you have the CSRF token value
+
+                // Create hidden DELETE method input
+                let methodInput = document.createElement('input');
+                methodInput.type = 'hidden';
+                methodInput.name = '_method';
+                methodInput.value = 'DELETE';
+
+                form.appendChild(csrfInput);
+                form.appendChild(methodInput);
+
+                document.body.appendChild(form);
+                form.submit();
+
+                Swal.fire(
+                    'Eliminado!',
+                    'El usuario ha sido eliminado.',
+                    'success'
+                );
+            } else {
+                Swal.fire(
+                    'Cancelado',
+                    'El usuario no ha sido eliminado.',
+                    'error'
+                );
+            }
         });
     }
-</script>
+    </script>
+

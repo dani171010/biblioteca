@@ -25,9 +25,9 @@ class UpdateusuarioRequest extends FormRequest
             'nombre' => 'required|string|max:50',
             'apellido' => 'required|string|max:50',
             'documento_t' => 'required|string|max:50',
-            'documento' => 'required|numeric|max:50',
+            'documento' => 'required|string|max:50',
             'email' => 'required|email|max:80',
-            'telefono' => 'required|numeric|max:50',
+            'telefono' => 'required|string|max:50',
         ];
     }
 }
