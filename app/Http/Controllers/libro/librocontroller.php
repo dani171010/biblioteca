@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\libro;
 use App\Http\Requests\StorelibroRequest;
 use App\Http\Requests\UpdatelibroRequest;
+use App\Models\autor;
+use App\Models\editorial;
 
 class librocontroller extends Controller
 {
@@ -24,7 +26,10 @@ class librocontroller extends Controller
      */
     public function create()
     {
-        return view('libro.create');
+        $autor = autor::all();
+        $editorial = editorial::all();
+
+        return view('libro.create', compact('autor','editorial'));
     }
 
     /**
@@ -56,7 +61,10 @@ class librocontroller extends Controller
      */
     public function edit(libro $libro)
     {
-        return view('libro.edit',compact('libro'));
+        $autor = autor::all();
+        $editorial = editorial::all();
+
+        return view('libro.edit',compact('libro','autor','editorial'));
     }
 
     /**
@@ -64,7 +72,7 @@ class librocontroller extends Controller
      */
     public function update(UpdatelibroRequest $request, libro $libro)
     {
-        libro->update([
+        $libro->update([
             'titulo'=>$request->titulo,
             'autor_id'=>$request->autor_id,
             'editorial_id'=>$request->editorial_id,
@@ -81,6 +89,6 @@ class librocontroller extends Controller
     public function destroy(libro $libro)
     {
         $libro->delete();
-        return redirectc()->route('libro.index');
+        return redirect()->route('libro.index');
     }
 }

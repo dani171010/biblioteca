@@ -23,19 +23,19 @@ class libro extends Model
         'publicacion',
     ];
 
-    public function autor():BelongsTo
+    public function autor(): BelongsTo
     {
-    return $this->BelongTo(autor::class);
+        return $this->belongsTo(Autor::class);
     }
 
-    public function editorial():BelongsTo
+    public function editorial(): BelongsTo
     {
-    return $this->BelongsTo(editorial::class);
+        return $this->belongsTo(Editorial::class);
     }
 
-    public function prestamo():HasMany
+    public function prestamos(): HasMany
     {
-    return $this->hasMany(prestamo::class);
+        return $this->hasMany(Prestamo::class);
     }
 }
 
