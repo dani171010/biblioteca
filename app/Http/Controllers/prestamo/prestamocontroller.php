@@ -6,6 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\prestamo;
 use App\Http\Requests\StoreprestamoRequest;
 use App\Http\Requests\UpdateprestamoRequest;
+use App\Models\libro;
+use App\Models\usuario;
+use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
+
 
 class prestamocontroller extends Controller
 {
@@ -16,6 +22,7 @@ class prestamocontroller extends Controller
     {
         $prestamo = prestamo::all();
 
+
         return view('prestamo.index',compact('prestamo'));
     }
 
@@ -24,7 +31,9 @@ class prestamocontroller extends Controller
      */
     public function create()
     {
-        return view('prestamo.create');
+        $usuario = usuario::all();
+        $libros = libro::all();
+        return view('prestamo.create',compact('usuario','libros'));
     }
 
     /**
@@ -32,14 +41,33 @@ class prestamocontroller extends Controller
      */
     public function store(StoreprestamoRequest $request)
     {
-        prestamo::create([
+        DB::beginTransaction();
+
+        try{
+
+        $prestamo = prestamo::create([
             'entrega_f'=>$request->entrega_f,
             'devolucion_f'=>$request->devolucion_f,
             'observacion'=>$request->observacion,
-            'libro_id'=>$request->libro_id,
             'usuario_id'=>$request->usuario_id,
+
         ]);
 
+        $prestamo->libros()->attach($request->libro_ids);
+
+        $libros = libro::whereIn('id', $request->libro_ids)->get();
+
+
+        //generar pdf
+        $pdf = Pdf::loadView('prestamo.pdf',compact('prestamo','libros'))->setPaper('folio');
+        $pdfPath = 'prestamo/prestamo-' . $prestamo->id . '.pdf';
+        $pdf->save(storage_path('app/public/' . $pdfPath));
+
+        DB::commit();
+    }catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->route('prestamo.index')->with('error', 'Error al crear el prestamo: ' . $e->getMessage());
+    }
         return redirect()->route('prestamo.index')->with('request','Prestamo creado con exito');
     }
 
@@ -48,7 +76,8 @@ class prestamocontroller extends Controller
      */
     public function show(prestamo $prestamo)
     {
-        //
+        $pdfPath = 'prestamo/prestamo-' . $prestamo->id . '.pdf';
+        return response()->download(storage_path('app/public/' . $pdfPath));
     }
 
     /**
@@ -56,7 +85,6 @@ class prestamocontroller extends Controller
      */
     public function edit(prestamo $prestamo)
     {
-        return view('prestamo.edit',compact('prestamo'));
     }
 
     /**
@@ -64,15 +92,6 @@ class prestamocontroller extends Controller
      */
     public function update(UpdateprestamoRequest $request, prestamo $prestamo)
     {
-        prestamo->update([
-            'entrega_f'=>$request->entrega_f,
-            'devolucion_f'=>$request->devolucion_f,
-            'observacion'=>$request->observacion,
-            'libro_id'=>$request->libro_id,
-            'usuario_id'=>$request->usuario_id,
-        ]);
-
-        return redirect()->route('prestamo.index')->with('request','Prestamo editado con exito');
     }
 
     /**
@@ -80,7 +99,22 @@ class prestamocontroller extends Controller
      */
     public function destroy(prestamo $prestamo)
     {
-        $prestamo->delete();
-        return redirect()->route('prestamo.index');
+        DB::beginTransaction();
+        try {
+            // Eliminar el archivo PDF si existe
+            $pdfPath = 'prestamo/prestamo-' . $prestamo->id . '.pdf';
+            if (Storage::exists('public/' . $pdfPath)) {
+                Storage::delete('public/' . $pdfPath);
+            }
+
+            // Eliminar el registro en la base de datos
+            $prestamo->delete();
+
+            DB::commit();
+            return redirect()->route('prestamo.index')->with('success', 'Prestamo eliminado con éxito.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('prestamo.index')->with('error', 'Error al eliminar el Prestamo: ' . $e->getMessage());
+        }
     }
 }

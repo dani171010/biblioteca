@@ -22,11 +22,12 @@ class StoreprestamoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'entrega_f' =>'required|date',
-            'devolucion_f' =>'required|date',
-            'observacion' =>'required|string|max:90',
-            'libro_id'=> 'required|exists:libros,id',
-            'usuario_id' => 'required|exists:usuarios,id',
+            'entrega_f' => 'required|date',
+            'devolucion_f' => 'required|date',
+            'observacion' => 'required|string|max:90',
+            'libro_ids' => 'required|array|min:1', // Cambié 'libro_id' por 'libro_ids' para reflejar un array de libros
+            'libro_ids.*' => 'nullable',
+            'usuario_id' => 'required|', // Agregué la validación para 'usuario_id'
         ];
     }
 }

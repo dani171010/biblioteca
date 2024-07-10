@@ -33,9 +33,9 @@ class libro extends Model
         return $this->belongsTo(Editorial::class);
     }
 
-    public function prestamos(): HasMany
+    public function prestamos()
     {
-        return $this->hasMany(Prestamo::class);
+        return $this->belongsToMany(Prestamo::class, 'libro_prestamo', 'libro_id', 'prestamo_id');
     }
 }
 

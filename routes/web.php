@@ -6,7 +6,10 @@ use App\Http\Controllers\editorial\editorialcontroller;
 use App\Http\Controllers\libro\librocontroller;
 use App\Http\Controllers\prestamo\prestamocontroller;
 use App\Http\Controllers\usuario\usuariocontroller;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,4 +30,11 @@ Route::middleware([
     Route::resource('editorial', editorialcontroller::class);
     Route::resource('categorias', categoriacontroller::class);
     Route::resource('autor', autorcontroller::class);
+
+        Route::get('/form',function(){
+
+            $pdf = Pdf::loadView('prestamo.pdf');
+
+            return $pdf->stream();
+        });
 });

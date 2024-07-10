@@ -18,7 +18,6 @@ class prestamo extends Model
         'entrega_f',
         'devolucion_f',
         'observacion',
-        'libro_id',
         'usuario_id',
     ];
 
@@ -27,8 +26,8 @@ class prestamo extends Model
         return $this->BelongsTo(usuario::class);
     }
 
-    public function libro():BelongsTo
+    public function libros()
     {
-        return $this->BelongsTo(libro::class);
+        return $this->belongsToMany(Libro::class, 'libro_prestamo', 'prestamo_id', 'libro_id');
     }
 }

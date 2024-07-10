@@ -47,6 +47,12 @@
                         {{ __('Libros') }}
                     </x-nav-link>
                 </div>
+
+                <div>
+                    <x-nav-link href="{{ route('prestamo.index') }}" :active="request()->routeIs('prestamo.index')">
+                        {{ __('prestamo') }}
+                    </x-nav-link>
+                </div>
             </div>
 
 
